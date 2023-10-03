@@ -35,4 +35,25 @@ const signup = expressAsyncHandler(async (req, res) => {
     }
 });
 
-export { signup, };
+const getUser = expressAsyncHandler(async (req, res) => {
+
+    const { id } = req.params;
+
+    try {
+
+        if (!mongoose.Types.ObjectId.isValid(id)) 
+            return res.status(400).json({ message: 'Invalid user id format' });
+        
+        const user = await User.findById(id).select("-__v");
+      
+        if (!user)
+            return res.status(404).json({ message: 'User not found' });
+      
+        res.status(201).json({ user });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: err.message });
+    }
+});
+
+export { signup, getUser };
