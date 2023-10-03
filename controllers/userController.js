@@ -88,5 +88,28 @@ const updateUser = expressAsyncHandler(async (req, res) => {
     }
 });
 
+const deleteUser = expressAsyncHandler(async (req, res) => {
+    
+    const { id } = req.params;
 
-export { signup, getUser, updateUser };
+    try {
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: 'Invalid user id format' });
+        }
+
+        const user = await User.findByIdAndRemove(id);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(201).json({ message: 'User deleted successfully' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: err.message });
+    }
+});
+
+
+
+export { signup, getUser, updateUser, deleteUser };
