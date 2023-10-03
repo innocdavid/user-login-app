@@ -3,9 +3,11 @@ import dotenv from 'dotenv';
 import colors from 'colors'
 import morgan from 'morgan';
 
+import dbConnection from './config/db.js';
+
 const app = express();
 dotenv.config();
-
+dbConnection();
 
 //MIDDLEWARES
 app.use(morgan('tiny'));
