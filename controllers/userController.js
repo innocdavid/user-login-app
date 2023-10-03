@@ -28,7 +28,7 @@ const signup = expressAsyncHandler(async (req, res) => {
         const user = new User({ firstName, lastName, email, password:hashedPassword });
 
         await user.save();
-        res.status(201).json({ id: user._id, message: 'User created successfully' });
+        res.status(201).json({ id: user.id, message: 'User created successfully' });
     } catch (err) {
         console.error(err.bgRed);
         res.status(500).json({ error: err.message });
@@ -56,4 +56,37 @@ const getUser = expressAsyncHandler(async (req, res) => {
     }
 });
 
-export { signup, getUser };
+const updateUser = expressAsyncHandler(async (req, res) => {
+ 
+    const { id } = req.params;
+    const { firstName, lastName, email, password } = req.body;
+
+    try {
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: 'Invalid user id format' });
+        }
+
+        const user = await User.findById(id);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        if (email) user.email = email;
+        if (password) {
+            const hashedPassword = await bcrypt.hash(password, 10);
+            user.password = hashedPassword;
+        }
+        if (firstName) user.firstName = firstName;
+        if (lastName) user.lastName = lastName;
+
+        await user.save();
+        res.status(201).json({ id: user.id, message: 'User updated successfully' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: err.message });
+    }
+});
+
+
+export { signup, getUser, updateUser };
