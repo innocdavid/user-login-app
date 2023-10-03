@@ -7,7 +7,7 @@ import colors from 'colors';
 
 import User from '../models/userModel.js';
 
-const createUser = expressAsyncHandler(async (req, res) => {
+const signup = expressAsyncHandler(async (req, res) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -35,4 +35,4 @@ const createUser = expressAsyncHandler(async (req, res) => {
     }
 });
 
-export { createUser, };
+export { signup, };
