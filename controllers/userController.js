@@ -37,6 +37,12 @@ const signup = expressAsyncHandler(async (req, res) => {
 
 const getUser = expressAsyncHandler(async (req, res) => {
 
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     const { id } = req.params;
 
     try {
@@ -58,6 +64,12 @@ const getUser = expressAsyncHandler(async (req, res) => {
 
 const updateUser = expressAsyncHandler(async (req, res) => {
  
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     const { id } = req.params;
     const { firstName, lastName, email, password } = req.body;
 
@@ -89,7 +101,13 @@ const updateUser = expressAsyncHandler(async (req, res) => {
 });
 
 const deleteUser = expressAsyncHandler(async (req, res) => {
-    
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     const { id } = req.params;
 
     try {
