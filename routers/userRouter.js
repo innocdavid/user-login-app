@@ -10,7 +10,7 @@ import { signup , getUser, updateUser, deleteUser, login, logout } from '../cont
 
 userRouter.post('/signup', signup);
 userRouter.post('/login', login);
-userRouter.post('/logout', logout);
+userRouter.post('/logout', verifyToken, logout);
 userRouter.get('/user/:id', verifyToken, validateObjectId, getUser);
 userRouter.put('/user/:id', verifyToken, validateObjectId, updateUser);
 userRouter.delete('/user/:id', verifyToken, validateObjectId, deleteUser);
