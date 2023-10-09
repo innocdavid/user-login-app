@@ -1,11 +1,13 @@
 // import modules
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken'
 import { validationResult } from 'express-validator';
 import expressAsyncHandler from 'express-async-handler';
 import colors from 'colors';
 
 import User from '../models/userModel.js';
+import generateToken from '../middleware/generateToken.js';
 
 const signup = expressAsyncHandler(async (req, res) => {
     const errors = validationResult(req);
@@ -51,7 +53,21 @@ const login = expressAsyncHandler(async(req, res) => {
             return res.status(400).json({ message: 'Incorrect email or password' });
         }
         
-        res.status(201).json({ message: 'User login successful' });
+        //jwt 
+        const token = generateToken(existingUser.id);
+
+        //cookie
+        res.cookie(String(existingUser.id), token, 
+            {
+                path: '/',
+                expires: new Date(Date.now() + 1000 * 30),
+                httpOnly: true,
+                sameSite: 'lax'
+            })
+
+        res.status(201).json({ 
+            token,
+            message: 'User login successful' });
     } catch (err) {
         console.error(err.bgRed);
         res.status(500).json({ error: err.message });
