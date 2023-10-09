@@ -6,10 +6,11 @@ import validateObjectId from '../middleware/validateObjectId.js';
 
 const userRouter = express.Router();
 
-import { signup , getUser, updateUser, deleteUser, login } from '../controllers/userController.js';
+import { signup , getUser, updateUser, deleteUser, login, logout } from '../controllers/userController.js';
 
 userRouter.post('/signup', signup);
 userRouter.post('/login', login);
+userRouter.post('/logout', logout);
 userRouter.get('/user/:id', verifyToken, validateObjectId, getUser);
 userRouter.put('/user/:id', verifyToken, validateObjectId, updateUser);
 userRouter.delete('/user/:id', verifyToken, validateObjectId, deleteUser);
