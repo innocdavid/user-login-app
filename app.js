@@ -1,5 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
 import colors from 'colors'
 import morgan from 'morgan';
 
@@ -13,6 +15,8 @@ dbConnection();
 //MIDDLEWARES
 app.use(morgan('tiny'));
 app.use(express.json());
+app.use(cors({ credentials: true, origin: 'http://127.0.0.1:8000' }));
+app.use(cookieParser());
 
 //ROUTES
 app.use('/api/v1/', userRouter);
