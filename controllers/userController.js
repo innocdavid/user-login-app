@@ -35,6 +35,29 @@ const signup = expressAsyncHandler(async (req, res) => {
     }
 });
 
+const login = expressAsyncHandler(async(req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const existingUser = await User.findOne({ email });
+
+        if (!existingUser) {
+            return res.status(404).json({ message: 'User not found'});
+        }
+
+        const isPasswordCorrect = bcrypt.compareSync(password, existingUser.password);
+
+        if (!isPasswordCorrect) {
+            return res.status(400).json({ message: 'Incorrect email or password' });
+        }
+        
+        res.status(201).json({ message: 'User login successful' });
+    } catch (err) {
+        console.error(err.bgRed);
+        res.status(500).json({ error: err.message });
+    }
+});
+
 const getUser = expressAsyncHandler(async (req, res) => {
 
     const errors = validationResult(req);
@@ -130,4 +153,4 @@ const deleteUser = expressAsyncHandler(async (req, res) => {
 
 
 
-export { signup, getUser, updateUser, deleteUser };
+export { signup, getUser, updateUser, deleteUser, login };
