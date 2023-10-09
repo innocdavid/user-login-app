@@ -1,0 +1,4 @@
+// .babelrc (for JSON configuration)
+{
+    "presets": ["@babel/preset-env"]
+  }
