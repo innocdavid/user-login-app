@@ -74,6 +74,24 @@ const login = expressAsyncHandler(async(req, res) => {
     }
 });
 
+const logout = expressAsyncHandler(async(req, res) => {
+
+    const { email } = req.body;
+
+    const existingUser = await User.findOne({ email });
+
+    if (!existingUser) {
+        return res.status(404).json({ message: 'User not found'});
+    }
+
+    res.cookie(existingUser.id, '', {
+        expires: new Date(0),
+        httpOnly: true,
+    });
+
+    res.status(200).json({ message: 'Logout successful' });
+})
+
 const getUser = expressAsyncHandler(async (req, res) => {
 
     const errors = validationResult(req);
@@ -169,4 +187,4 @@ const deleteUser = expressAsyncHandler(async (req, res) => {
 
 
 
-export { signup, getUser, updateUser, deleteUser, login };
+export { signup, getUser, updateUser, deleteUser, login, logout };
