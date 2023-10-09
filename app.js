@@ -17,10 +17,14 @@ app.use(express.json());
 //ROUTES
 app.use('/api/v1/', userRouter);
 
-
 const PORT = process.env.PORT || 8080;
 const HOST = process.env.HOST || 'localhost';
 
-app.listen(PORT, () => {
-    console.log(`server listening at http://${HOST}:${PORT}`.bgYellow);
-});
+if (process.env.NODE_ENV !== 'test') {
+    app.listen(PORT, () => {
+        console.log(`server listening at http://${HOST}:${PORT}`.bgYellow);
+    });
+}
+
+
+export default app;
