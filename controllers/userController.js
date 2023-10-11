@@ -92,99 +92,99 @@ const logout = expressAsyncHandler(async(req, res) => {
     res.status(200).json({ message: 'Logout successful' });
 })
 
-const getUser = expressAsyncHandler(async (req, res) => {
+// const getUser = expressAsyncHandler(async (req, res) => {
 
-    const errors = validationResult(req);
+//     const errors = validationResult(req);
 
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
+//     if (!errors.isEmpty()) {
+//         return res.status(400).json({ errors: errors.array() });
+//     }
 
-    const { id } = req.params;
+//     const { id } = req.params;
 
-    try {
+//     try {
 
-        if (!mongoose.Types.ObjectId.isValid(id)) 
-            return res.status(400).json({ message: 'Invalid user id format' });
+//         if (!mongoose.Types.ObjectId.isValid(id)) 
+//             return res.status(400).json({ message: 'Invalid user id format' });
         
-        const user = await User.findById(id).select("-__v");
+//         const user = await User.findById(id).select("-__v");
       
-        if (!user)
-            return res.status(404).json({ message: 'User not found' });
+//         if (!user)
+//             return res.status(404).json({ message: 'User not found' });
       
-        res.status(201).json({ user });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: err.message });
-    }
-});
+//         res.status(201).json({ user });
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).json({ error: err.message });
+//     }
+// });
 
-const updateUser = expressAsyncHandler(async (req, res) => {
+// const updateUser = expressAsyncHandler(async (req, res) => {
  
-    const errors = validationResult(req);
+//     const errors = validationResult(req);
 
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
+//     if (!errors.isEmpty()) {
+//         return res.status(400).json({ errors: errors.array() });
+//     }
 
-    const { id } = req.params;
-    const { firstName, lastName, email, password } = req.body;
+//     const { id } = req.params;
+//     const { firstName, lastName, email, password } = req.body;
 
-    try {
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(400).json({ message: 'Invalid user id format' });
-        }
+//     try {
+//         if (!mongoose.Types.ObjectId.isValid(id)) {
+//             return res.status(400).json({ message: 'Invalid user id format' });
+//         }
 
-        const user = await User.findById(id);
+//         const user = await User.findById(id);
 
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
+//         if (!user) {
+//             return res.status(404).json({ message: 'User not found' });
+//         }
 
-        if (email) user.email = email;
-        if (password) {
-            const hashedPassword = await bcrypt.hash(password, 10);
-            user.password = hashedPassword;
-        }
-        if (firstName) user.firstName = firstName;
-        if (lastName) user.lastName = lastName;
+//         if (email) user.email = email;
+//         if (password) {
+//             const hashedPassword = await bcrypt.hash(password, 10);
+//             user.password = hashedPassword;
+//         }
+//         if (firstName) user.firstName = firstName;
+//         if (lastName) user.lastName = lastName;
 
-        await user.save();
-        res.status(201).json({ id: user.id, message: 'User updated successfully' });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: err.message });
-    }
-});
+//         await user.save();
+//         res.status(201).json({ id: user.id, message: 'User updated successfully' });
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).json({ message: err.message });
+//     }
+// });
 
-const deleteUser = expressAsyncHandler(async (req, res) => {
+// const deleteUser = expressAsyncHandler(async (req, res) => {
 
-    const errors = validationResult(req);
+//     const errors = validationResult(req);
 
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
+//     if (!errors.isEmpty()) {
+//         return res.status(400).json({ errors: errors.array() });
+//     }
 
-    const { id } = req.params;
+//     const { id } = req.params;
 
-    try {
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(400).json({ message: 'Invalid user id format' });
-        }
+//     try {
+//         if (!mongoose.Types.ObjectId.isValid(id)) {
+//             return res.status(400).json({ message: 'Invalid user id format' });
+//         }
 
-        const user = await User.findByIdAndRemove(id);
+//         const user = await User.findByIdAndRemove(id);
 
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
+//         if (!user) {
+//             return res.status(404).json({ message: 'User not found' });
+//         }
 
-        res.status(201).json({ message: 'User deleted successfully' });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: err.message });
-    }
-});
+//         res.status(201).json({ message: 'User deleted successfully' });
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).json({ message: err.message });
+//     }
+// });
 
 
 
-export { signup, getUser, updateUser, deleteUser, login, logout };
+export { signup, login, logout };
